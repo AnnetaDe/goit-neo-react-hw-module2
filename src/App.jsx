@@ -48,14 +48,11 @@ const App = () => {
     }
   }, [storage]);
 
-  const handleReset = () => {
-    setStorage({ good: 0, neutral: 0, bad: 0, total: 0 });
-    setShowReset(false);
-  };
-
   const updateFeedback = feedbackType => {
     if (feedbackType === 'reset') {
-      handleReset();
+      setShowReset(false);
+
+      setStorage({ good: 0, neutral: 0, bad: 0, total: 0 });
     }
     setStorage(
       previous => ({ ...previous, [feedbackType]: previous[feedbackType] + 1 }),
@@ -67,7 +64,11 @@ const App = () => {
   return (
     <div className="main_wrapper">
       <Description />
-      <Options options={options} handleClick={updateFeedback} />
+      <Options
+        options={options}
+        handleClick={updateFeedback}
+        showReset={showReset}
+      />
       <Feedback state={storage} />
       <Notification message={mess} />
     </div>
