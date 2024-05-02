@@ -1,0 +1,11 @@
+.notification {
+  font-size: 1rem;
+  margin-top: 20px;
+  margin-left: 50px;
+  font-family: 'Roboto', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 20px;
+
+  width: 30%;
+}

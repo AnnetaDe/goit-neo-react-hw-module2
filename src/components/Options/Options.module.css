@@ -1,0 +1,21 @@
+.options {
+  display: flex;
+  padding-right: 50px;
+  padding-left: 50px;
+  button {
+    background-color: #87914a;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 400;
+    margin-right: 10px;
+
+    padding: 10px 40px;
+    transition: all 0.3s;
+    &:hover {
+      background-color: #7b4a75;
+    }
+  }
+}

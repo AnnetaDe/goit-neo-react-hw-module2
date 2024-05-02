@@ -1,5 +1,5 @@
 .main-wrapper {
   justify-content: center;
   align-items: center;
-  width: 100vw;
+  max-width: 1200px;
 }
