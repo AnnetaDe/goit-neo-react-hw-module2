@@ -8,58 +8,41 @@ import Notification from './components/Notification/Notification';
 
 const App = () => {
   const options = ['good', 'neutral', 'bad', 'reset'];
-  const stored = { good: 0, neutral: 0, bad: 0, total: 0 };
-  let totalFeedback = 0;
+
+  const emptyStored = {
+    good: 0,
+    neutral: 0,
+    bad: 0,
+  };
 
   const [storage, setStorage] = useState(() => {
     const saved = localStorage.getItem('feedback');
     if (saved !== null) {
       return JSON.parse(saved);
     }
-    return stored;
+    return emptyStored;
   });
+
+  const countTotalFeedback = () => {
+    return storage.good + storage.neutral + storage.bad;
+  };
 
   useEffect(() => {
     localStorage.setItem('feedback', JSON.stringify(storage));
   }, [storage]);
 
-  const countTotalFeedback = () => {
-    totalFeedback = storage.good + storage.neutral + storage.bad;
-    console.log(totalFeedback);
-    return totalFeedback;
-  };
-  storage.total = countTotalFeedback();
-  const [showReset, setShowReset] = useState(false);
-  console.log(showReset);
-
-  const [mess, setMess] = useState(() => {
-    totalFeedback = storage.good + storage.neutral + storage.bad;
-    if (totalFeedback === 0) {
-      return 'No feedback given';
-    }
-    return '';
-  });
-
-  useEffect(() => {
-    if (storage.good + storage.neutral + storage.bad === 0) {
-      setMess('No feedback given');
-    } else {
-      setMess('');
-    }
-  }, [storage]);
-
   const updateFeedback = feedbackType => {
     if (feedbackType === 'reset') {
-      setShowReset(false);
-
-      setStorage({ good: 0, neutral: 0, bad: 0, total: 0 });
+      setStorage(emptyStored);
+      return;
     }
-    setStorage(
-      previous => ({ ...previous, [feedbackType]: previous[feedbackType] + 1 }),
-      [storage]
-    );
-    setShowReset(true);
+    setStorage(previous => ({
+      ...previous,
+      [feedbackType]: previous[feedbackType] + 1,
+    }));
   };
+  const total = countTotalFeedback();
+  const positiveFeedback = Math.round((storage.good / total) * 100);
 
   return (
     <div className="main_wrapper">
@@ -67,10 +50,17 @@ const App = () => {
       <Options
         options={options}
         handleClick={updateFeedback}
-        showReset={showReset}
+        showReset={total > 0}
       />
-      <Feedback state={storage} />
-      <Notification message={mess} />
+      {total > 0 ? (
+        <Feedback
+          state={storage}
+          total={total}
+          positiveFeedback={positiveFeedback}
+        />
+      ) : (
+        <Notification message={'No feedback'} />
+      )}
     </div>
   );
 };

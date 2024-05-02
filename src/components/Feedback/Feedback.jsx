@@ -1,22 +1,16 @@
 import s from './Feedback.module.css';
-const Feedback = ({ state }) => {
+const Feedback = ({ state, total, positiveFeedback }) => {
   return (
     <div className={s.feedback}>
       <p>Good {state.good}</p>
       <p>Neutral {state.neutral}</p>
       <p>Bad {state.bad}</p>
-      {state.total !== 0 && <p>Total {state.total}</p>}
-      {state.total !== 0 && (
-        <p>
-          Positive{' '}
-          {(
-            ((state.good + state.neutral) /
-              (state.good + state.neutral + state.bad)) *
-            100
-          ).toFixed(0)}
-          %
-        </p>
-      )}
+      <p>Total {total}</p>
+
+      <p>
+        Positive:
+        {positiveFeedback}%
+      </p>
     </div>
   );
 };
